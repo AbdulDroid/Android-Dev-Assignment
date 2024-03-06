@@ -47,13 +47,25 @@ class AppViewModel : ViewModel() {
 
     private fun deleteAndUpdateUiState() {
         viewModelScope.launch {
-            val updatedText = _state.value.displayData.dropLast(1)
-            updateUiState(updatedText)
+            val currentText = _state.value.displayData
+            if (currentText.isNotEmpty()) {
+                val updatedText = _state.value.displayData.dropLast(1)
+                updateUiState(updatedText)
+            }else {
+                propagateError("No text in display to delete!")
+            }
         }
     }
 
     private fun clearAndUpdateUiState() {
-        viewModelScope.launch { updateUiState("") }
+        viewModelScope.launch {
+            val currentText = _state.value.displayData
+            if (currentText.isNotEmpty()) {
+                updateUiState("")
+            } else {
+                propagateError("No text in display to clear!")
+            }
+        }
     }
 
     private fun propagateError(message: String?) {

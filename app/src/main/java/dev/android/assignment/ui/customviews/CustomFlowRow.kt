@@ -16,18 +16,24 @@ fun CustomFlowRow(
         var currentRow = 0
         var currentOrigin = IntOffset.Zero
         val placeables = measurables.map { measurable ->
-            val placeable = measurable.measure(constraints)
+            try {
+                val placeable = measurable.measure(constraints)
 
-            if (currentOrigin.x > 0f && currentOrigin.x + placeable.width > constraints.maxWidth) {
-                if (currentRow + 1 > maxRows) {
-                    onContentOverflow()
-                    return@map null
+                if (currentOrigin.x > 0f && currentOrigin.x + placeable.width > constraints.maxWidth) {
+                    if (currentRow + 1 > maxRows) {
+                        onContentOverflow()
+                        return@map null
+                    }
+                    currentRow += 1
+                    currentOrigin =
+                        currentOrigin.copy(x = 0, y = currentOrigin.y + placeable.height)
                 }
-                currentRow += 1
-                currentOrigin = currentOrigin.copy(x = 0, y = currentOrigin.y + placeable.height)
-            }
-            placeable to currentOrigin.also {
-                currentOrigin = it.copy(x = it.x + placeable.width)
+                placeable to currentOrigin.also {
+                    currentOrigin = it.copy(x = it.x + placeable.width)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                return@map null
             }
         }
 
