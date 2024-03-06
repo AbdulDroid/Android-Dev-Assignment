@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Android Dev Assignment</string>
+    <string name="key_delete">Delete</string>
+    <string name="key_clear">Clear</string>
+    <string name="key_clear_text">CLR</string>
+    <string name="overflow_error">Display limit reached!</string>
+</resources>
