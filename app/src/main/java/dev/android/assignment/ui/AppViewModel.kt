@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dev.android.assignment.intent.AppIntent
 import dev.android.assignment.intent.AppState
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.consumeAsFlow
@@ -40,6 +41,7 @@ class AppViewModel : ViewModel() {
 
     private fun addKeyAndUpdateUiState(key: String) {
         viewModelScope.launch {
+            delay(350L)
             val updatedText = _state.value.displayData + key
             updateUiState(updatedText)
         }
@@ -49,9 +51,10 @@ class AppViewModel : ViewModel() {
         viewModelScope.launch {
             val currentText = _state.value.displayData
             if (currentText.isNotEmpty()) {
+                delay(350L)
                 val updatedText = _state.value.displayData.dropLast(1)
                 updateUiState(updatedText)
-            }else {
+            } else {
                 propagateError("No text in display to delete!")
             }
         }
